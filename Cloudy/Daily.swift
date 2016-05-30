@@ -17,6 +17,7 @@ struct Daily {
     var time: [UInt?] = []
     var day: [String?] = []
     var summaryOverview: String?
+    var dateCreated: NSDate?
     
     init(weatherDictionary: [String: AnyObject]) {
         if let daily = weatherDictionary["daily"] as? [String: AnyObject] {
@@ -38,7 +39,9 @@ struct Daily {
                         }
                         if let value = item["time"] as? UInt {
                             time.append(value)
-                            day.append(weekStringFromUnixTime(value))
+                            let (weekDay,date) = weekStringFromUnixTime(value)
+                            day.append(weekDay)
+                            dateCreated = date
                         }
                     }
                 }
@@ -47,7 +50,7 @@ struct Daily {
     }
 }
 
-func weekStringFromUnixTime(unixTime: UInt) -> String {
+func weekStringFromUnixTime(unixTime: UInt) -> (String,NSDate) {
     let timeInSeconds = NSTimeInterval(unixTime)
     let weatherDate = NSDate(timeIntervalSince1970: timeInSeconds)
     
@@ -55,5 +58,5 @@ func weekStringFromUnixTime(unixTime: UInt) -> String {
 //    dateFormatter.timeStyle = .MediumStyle
     dateFormatter.dateFormat = "EEE"
     
-    return dateFormatter.stringFromDate(weatherDate)
+    return (dateFormatter.stringFromDate(weatherDate),weatherDate)
 }

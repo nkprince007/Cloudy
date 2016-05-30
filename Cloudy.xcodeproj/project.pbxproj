@@ -23,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B9BC0DC91CFAB9E300281BA4 /* contents.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = contents.json; path = Cloudy/contents.json; sourceTree = "<group>"; };
 		B9E232641CF9AFF800403ED3 /* Currently.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Currently.swift; sourceTree = "<group>"; };
 		B9F628031CF95B7200D40FB8 /* Cloudy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cloudy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9F628061CF95B7200D40FB8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -55,6 +56,7 @@
 		B9F627FA1CF95B7200D40FB8 = {
 			isa = PBXGroup;
 			children = (
+				B9BC0DC91CFAB9E300281BA4 /* contents.json */,
 				B9F628241CF977EB00D40FB8 /* CoreLocation.framework */,
 				B9F628051CF95B7200D40FB8 /* Cloudy */,
 				B9F628041CF95B7200D40FB8 /* Products */,
@@ -148,12 +150,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B9FAD67C1CF9EFEA00570FB6 /* contents.json in Resources */,
 				B9F628111CF95B7200D40FB8 /* LaunchScreen.storyboard in Resources */,
 				B9F6281D1CF95C6C00D40FB8 /* popit.wav in Resources */,
 				B9F6280E1CF95B7200D40FB8 /* Assets.xcassets in Resources */,
 				B9F628231CF9740000D40FB8 /* Main.storyboard in Resources */,
 				B9F6281F1CF95C6C00D40FB8 /* Squeaky Creaky.wav in Resources */,
-				B9FAD67C1CF9EFEA00570FB6 /* contents.json in Resources */,
 				B9F6281E1CF95C6C00D40FB8 /* swoosh.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

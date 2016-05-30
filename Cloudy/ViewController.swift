@@ -148,7 +148,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             
             NSLog("Locality:\(locality)\nPostalCode:\(postalCode)\nAdministrativeArea:\(administrativeArea)\nCountry:\(country)")
             
-            let string = "\(locality!), \(administrativeArea), \(country)!)"
+            let string = "\(locality!), \(administrativeArea!), \(country!)"
             
             self.userLocationLabel.text = string
             
@@ -394,27 +394,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 let dataObject = NSData(contentsOfURL: location!)
                 let weatherDictionary = try! NSJSONSerialization.JSONObjectWithData(dataObject!, options:[])
                 
-                //TEST Connection and API 
-//                print(weatherDictionary)
+                if let weather = weatherDictionary as? [String: AnyObject] {
+                    self.displayData(weather)
+                }
                 
-                let current = Currently(weatherDictionary: weatherDictionary as! [String : AnyObject])
-                
-                print(current)
-                
-                dispatch_async(dispatch_get_main_queue()) { () -> Void in
-                    
-                    //Current data display
-                    if let _ = current.temperature {
-                        self.temperatureLabel.text = "\(Fahrenheit2Celsius(current.temperature!))"
+                dispatch_async(dispatch_get_main_queue()) {
+                    let path = self.getDocumentsDirectory().stringByAppendingPathComponent("contents.json")
+                    do {
+                        try dataObject?.writeToFile(path, options:[])
+                    } catch {
+                        fatalError("failedToWriteToFile at path: \(path)")
                     }
-                    self.iconView.image = current.icon
-                    self.precipitationLabel.text = "\(current.precipProbability!)"
-                    self.humidityLabel.text = "\(current.humidity!)"
-                    self.summaryLabel.text = "\(current.summary!)"
-                    self.windSpeedLabel.text = "\(current.windSpeed!)"
-                    
-                    let path = NSBundle.mainBundle().resourcePath
-                    try! dataObject?.writeToFile(path!+"/contents1.json", options:[])
                 }
                 
             } else {
@@ -431,31 +421,29 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                     print("Error NULL")
                 }
                 
-                let fm = NSFileManager.defaultManager()
-                let path = NSBundle.mainBundle().resourcePath
-                if let item = fm.contentsAtPath(path!+"/contents.json") {
                 
-                    let dataObject = item
-                    let weatherDictionary = try! NSJSONSerialization.JSONObjectWithData(dataObject, options:[NSJSONReadingOptions.AllowFragments])
-                    
-//                    print(weatherDictionary)
-                    
-                    let current = Currently(weatherDictionary: weatherDictionary as! [String : AnyObject])
-                    let daily = Daily(weatherDictionary: weatherDictionary as! [String : AnyObject])
-//                    print(current)
-                    print(daily)
                 
-                    dispatch_async(dispatch_get_main_queue()) { () -> Void in
-                        //Current data display
-                        if let _ = current.temperature {
-                            self.temperatureLabel.text = "\(Fahrenheit2Celsius(current.temperature!))"
+                do {
+                    let path = self.getDocumentsDirectory().stringByAppendingPathComponent("contents.json")
+                    if let dataObject = NSFileManager.defaultManager().contentsAtPath(path) {
+                        let weatherDictionary = try NSJSONSerialization.JSONObjectWithData(dataObject, options:[NSJSONReadingOptions.AllowFragments])
+                        if let weather = weatherDictionary as? [String: AnyObject] {
+                            self.displayData(weather)
                         }
-                        self.iconView.image = current.icon
-                        self.precipitationLabel.text = "\(current.precipProbability!)"
-                        self.humidityLabel.text = "\(current.humidity!)"
-                        self.summaryLabel.text = "\(current.summary!)"
-                        self.windSpeedLabel.text = "\(current.windSpeed!)"
-
+                    }
+                } catch {
+                
+                    let fm = NSFileManager.defaultManager()
+                    let path = NSBundle.mainBundle().resourcePath
+                    
+                    
+                    if let item = fm.contentsAtPath(path!+"/contents.json") {
+                
+                        let dataObject = item
+                        let weatherDictionary = try! NSJSONSerialization.JSONObjectWithData(dataObject, options:[NSJSONReadingOptions.AllowFragments])
+                        if let weather = weatherDictionary as? [String: AnyObject] {
+                            self.displayData(weather)
+                        }
                     }
                 }
             }
@@ -464,6 +452,73 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         downloadTask.resume()
 
+    }
+    
+    func getDocumentsDirectory() -> NSString {
+        let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
+        let docDir = paths[0]
+        return docDir
+    }
+    
+    func displayData(weatherDictionary: [String: AnyObject]) {
+        
+        let current = Currently(weatherDictionary: weatherDictionary)
+        let daily = Daily(weatherDictionary: weatherDictionary)
+        
+        print(current)
+        print("\n\n\n")
+        print(daily)
+        
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            //Current data display
+            if let _ = current.temperature {
+                self.temperatureLabel.text = "\(Fahrenheit2Celsius(current.temperature!))"
+            }
+            self.iconView.image = current.icon
+            self.precipitationLabel.text = "\(current.precipProbability!)"
+            self.humidityLabel.text = "\(current.humidity!)"
+            self.summaryLabel.text = "\(current.summary!)"
+            self.windSpeedLabel.text = "\(current.windSpeed!)"
+            
+            self.dayZeroTemperatureLow.text = "\(Fahrenheit2Celsius(daily.tempMin[0]!))°"
+            self.dayZeroTemperatureHigh.text = "\(Fahrenheit2Celsius(daily.tempMax[1]!))°"
+            
+            if let dateUpdated = daily.dateCreated {
+                let today = NSDate()
+                switch today.compare(dateUpdated) {
+                case .OrderedAscending: //today is smaller than dateUpdated
+                    print("today is smaller than dateUpdated: \(today) \(dateUpdated)")
+                    self.wAlerts.text = daily.summaryOverview
+                    fallthrough
+                case .OrderedSame: //today is same as dateUpdated
+                    print("today is same as dateUpdated")
+                case .OrderedDescending: //today is greater than the dateUpdated
+                    print("today is greater than the dateUpdated: \(today) \(dateUpdated)")
+                }
+            }
+            
+            self.dayOneImage.image = daily.icon[1]
+            self.dayTwoImage.image = daily.icon[2]
+            self.dayThreeImage.image = daily.icon[3]
+            self.dayFourImage.image = daily.icon[4]
+            self.dayFiveImage.image = daily.icon[5]
+            self.daySixImage.image = daily.icon[6]
+            
+            self.dayOneHighLow.text = "\(Fahrenheit2Celsius(daily.tempMin[1]!))°/\(Fahrenheit2Celsius(daily.tempMax[1]!))°"
+            self.dayTwoHighLow.text = "\(Fahrenheit2Celsius(daily.tempMin[2]!))°/\(Fahrenheit2Celsius(daily.tempMax[2]!))°"
+            self.dayThreeHighLow.text = "\(Fahrenheit2Celsius(daily.tempMin[3]!))°/\(Fahrenheit2Celsius(daily.tempMax[3]!))°"
+            self.dayFourHighLow.text = "\(Fahrenheit2Celsius(daily.tempMin[4]!))°/\(Fahrenheit2Celsius(daily.tempMax[4]!))°"
+            self.dayFiveHighLow.text = "\(Fahrenheit2Celsius(daily.tempMin[5]!))°/\(Fahrenheit2Celsius(daily.tempMax[5]!))°"
+            self.daySixHighLow.text = "\(Fahrenheit2Celsius(daily.tempMin[6]!))°/\(Fahrenheit2Celsius(daily.tempMax[6]!))°"
+            
+            self.dayOneWeekDayLabel.text = "\(daily.day[1]!)"
+            self.dayTwoWeekDayLabel.text = "\(daily.day[2]!)"
+            self.dayThreeWeekDayLabel.text = "\(daily.day[3]!)"
+            self.dayFourWeekDayLabel.text = "\(daily.day[4]!)"
+            self.dayFiveWeekDayLabel.text = "\(daily.day[5]!)"
+            self.daySixWeekDayLabel.text = "\(daily.day[6]!)"
+            
+        }
     }
 
     override func didReceiveMemoryWarning() {
