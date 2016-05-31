@@ -359,22 +359,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     // SOUNDS
     
     func swooshsound() {
-        
         let alertSound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("swoosh", ofType: "wav")!)
-//        print(alertSound)
-        
         var error:NSError?
         do {
             audioPlayer = try AVAudioPlayer(contentsOfURL: alertSound)
         } catch let error1 as NSError {
             error = error1
             print(error)
-            
         }
         audioPlayer.prepareToPlay()
         audioPlayer.play()
-        
-        
     }
 
     
@@ -482,6 +476,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 case .OrderedSame: //today is same as dateUpdated
                     print("today is same as dateUpdated")
                 case .OrderedDescending: //today is greater than the dateUpdated
+                    self.wAlerts.text = ""
                     print("today is greater than the dateUpdated: \(today) \(dateUpdated)")
                 }
             }
@@ -521,6 +516,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 if let weather = weatherDictionary as? [String: AnyObject] {
                     let string = try String(contentsOfFile: locationPath, encoding: NSUTF8StringEncoding)
                     self.locationAsString = string
+                    self.weatherDict = weatherDictionary as? [String : AnyObject]
                     self.displayData(weather)
                 }
             }
@@ -531,6 +527,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 let dataObject = item
                 let weatherDictionary = try! NSJSONSerialization.JSONObjectWithData(dataObject, options:[NSJSONReadingOptions.AllowFragments])
                 if let weather = weatherDictionary as? [String: AnyObject] {
+                    self.weatherDict = weatherDictionary as? [String : AnyObject]
                     self.displayData(weather)
                 }
             }
@@ -550,7 +547,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             navigationController.detailItem = self.weatherDict
         }
     }
-
 
 }
 

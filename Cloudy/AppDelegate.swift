@@ -51,14 +51,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-        let localNotification: UILocalNotification = UILocalNotification()
-        localNotification.alertAction = "Cloudy"
-        localNotification.alertTitle = "Hello!"
-        localNotification.alertBody = "applicationWillTerminate"
-        localNotification.fireDate = NSDate(timeIntervalSinceNow: 8)
-        localNotification.soundName = UILocalNotificationDefaultSoundName
-        localNotification.userInfo = ["Naveen":"test"]
-        UIApplication.sharedApplication().scheduleLocalNotification(localNotification)
+//        let localNotification: UILocalNotification = UILocalNotification()
+//        localNotification.alertAction = "Cloudy"
+//        localNotification.alertTitle = "Hello!"
+//        localNotification.alertBody = "applicationWillTerminate"
+//        localNotification.fireDate = NSDate(timeIntervalSinceNow: 8)
+//        localNotification.soundName = UILocalNotificationDefaultSoundName
+//        localNotification.userInfo = ["Naveen":"test"]
+//        UIApplication.sharedApplication().scheduleLocalNotification(localNotification)
 //
 
     }

@@ -11,19 +11,19 @@ import UIKit
 
 struct Currently {
     
-    var apparentTemperature: String?
+    var apparentTemperature: String? //
     var temperature: Int?
     var time: String?
-    var cloudCover: Double?
+    var cloudCover: Double? //
     var dewPoint: Double?
     var humidity: Double?
     var icon: UIImage?
-    var ozone: Double?
-    var precipIntensity: Double?
+    var ozone: Double? //
+    var precipIntensity: Double? //
     var precipProbability: Double?
-    var pressure: Double?
-    var visibility: Double?
-    var windBearing: Int?
+    var pressure: Double? //
+    var visibility: Double? //
+    var windBearing: Int? //
     var windSpeed: Double?
     var summary: String?
     
