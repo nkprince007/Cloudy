@@ -401,6 +401,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 
                 if let weather = weatherDictionary as? [String: AnyObject] {
                     self.displayData(weather)
+                    print(weather)
                 }
                 
                 dispatch_async(dispatch_get_main_queue()) {

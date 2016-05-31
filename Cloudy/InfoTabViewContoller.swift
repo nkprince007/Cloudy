@@ -185,8 +185,11 @@ class InfoTabViewController: UIViewController {
 
     func displayData() {
         if let weatherDictionary = detailItem {
+
+            //needs Addition of UNITS module
+
             let current = Currently(weatherDictionary: weatherDictionary)
-            self.realFeelValue.text = " " + valueAssign(current.apparentTemperature)
+            self.realFeelValue.text = " " + valueAssign((current.apparentTemperature) + " °F"
             self.cloudCoverValue.text = " " + valueAssign(current.cloudCover)
             self.precipitationValue.text = " " + valueAssign(current.precipIntensity)
             self.ozoneValue.text = " " + valueAssign(current.ozone)

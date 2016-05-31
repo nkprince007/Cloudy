@@ -11,7 +11,7 @@ import UIKit
 
 struct Currently {
     
-    var apparentTemperature: String? //
+    var apparentTemperature: Double? //
     var temperature: Int?
     var time: String?
     var cloudCover: Double? //
@@ -51,29 +51,16 @@ struct Currently {
                 time = dateStringFromUnixTime(currentTime)
             }
             
-            apparentTemperature = currentWeather["apparentTemperature"] as? String
-            
-            if let dp = currentWeather["dewPoint"] as? String {
-                dewPoint = Double(dp)
-            }
-            
-            if let wb = currentWeather["windBearing"] as? String {
-                windBearing = Int(wb)
-            }
-    
+            apparentTemperature = currentWeather["apparentTemperature"] as? Double
+            dewPoint = currentWeather["dewPoint"] as? Double
+            windBearing = currentWeather["windBearing"] as? Int
             windSpeed = currentWeather["windSpeed"] as? Double
             visibility = currentWeather["visibility"] as? Double
             pressure = currentWeather["pressure"] as? Double
-            
-            if let cc = currentWeather["cloudCover"] as? String {
-                cloudCover = Double(cc)
-            }
-            
-            if let oz = currentWeather["ozone"] as? String {
-                ozone = Double(oz)
-            }
-            
+            cloudCover = currentWeather["cloudCover"] as? Double
+            ozone = currentWeather["ozone"] as? Double
             summary = currentWeather["summary"] as? String
+
     }
     
 }
