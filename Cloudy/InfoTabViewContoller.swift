@@ -189,7 +189,7 @@ class InfoTabViewController: UIViewController {
             //needs Addition of UNITS module
 
             let current = Currently(weatherDictionary: weatherDictionary)
-            self.realFeelValue.text = " " + valueAssign((current.apparentTemperature) + " °F"
+            self.realFeelValue.text = " " + valueAssign(current.apparentTemperature) + " °F"
             self.cloudCoverValue.text = " " + valueAssign(current.cloudCover)
             self.precipitationValue.text = " " + valueAssign(current.precipIntensity)
             self.ozoneValue.text = " " + valueAssign(current.ozone)
