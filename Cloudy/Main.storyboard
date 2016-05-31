@@ -19,6 +19,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="cPH-KY-3wn">
+                                <rect key="frame" x="149" y="274" width="20" height="20"/>
+                            </activityIndicatorView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RAIN" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z3f-h5-iyP">
                                 <rect key="frame" x="152" y="350" width="35" height="12"/>
                                 <constraints>
@@ -239,8 +242,8 @@
                                 <color key="textColor" red="0.81190557065217384" green="0.0078431372549019607" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Chicago, Illinois" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NXl-D1-7dW">
-                                <rect key="frame" x="111" y="28" width="98" height="18"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Chicago, Illinois" textAlignment="center" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NXl-D1-7dW">
+                                <rect key="frame" x="107" y="28" width="106" height="18"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -303,6 +306,9 @@
                                 <state key="normal" image="degree">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <segue destination="vun-Fh-m8N" kind="modal" identifier="InfoPage" modalTransitionStyle="flipHorizontal" id="O5e-lE-V0v"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.098039217293262482" green="0.098039217293262482" blue="0.098039217293262482" alpha="1" colorSpace="calibratedRGB"/>
@@ -355,6 +361,7 @@
                             <constraint firstItem="IpF-Mv-AXT" firstAttribute="centerX" secondItem="kJ0-p5-bTb" secondAttribute="centerX" id="SIc-5I-XKD"/>
                             <constraint firstItem="961-kq-eG5" firstAttribute="top" secondItem="dRT-xP-1SW" secondAttribute="bottom" constant="8" id="TbT-wp-QY4"/>
                             <constraint firstItem="ddv-fq-yAW" firstAttribute="top" secondItem="S2t-dR-TlE" secondAttribute="bottom" constant="8" id="Tp3-PQ-Blk"/>
+                            <constraint firstItem="cPH-KY-3wn" firstAttribute="centerY" secondItem="IpF-Mv-AXT" secondAttribute="centerY" id="TpP-bh-qOP"/>
                             <constraint firstItem="8PN-Fl-Zjo" firstAttribute="top" secondItem="mDw-fv-pWN" secondAttribute="bottom" constant="1" id="VDL-0C-2YD"/>
                             <constraint firstItem="mDw-fv-pWN" firstAttribute="height" secondItem="BEt-9c-q4q" secondAttribute="height" constant="18" id="VSz-Fm-jSf"/>
                             <constraint firstItem="Q5P-2Z-EPs" firstAttribute="top" secondItem="uLI-rq-01O" secondAttribute="bottom" constant="8" id="VXg-ZI-nzj"/>
@@ -409,6 +416,7 @@
                             <constraint firstItem="S6C-Mh-IfS" firstAttribute="leading" secondItem="8UE-kT-R1B" secondAttribute="trailing" constant="-1" id="x7T-vQ-QI0"/>
                             <constraint firstItem="QEs-96-NNR" firstAttribute="centerX" secondItem="S2t-dR-TlE" secondAttribute="centerX" constant="2" id="xdM-4j-ERc"/>
                             <constraint firstItem="04X-Y0-kEq" firstAttribute="firstBaseline" secondItem="Q5P-2Z-EPs" secondAttribute="firstBaseline" id="yHh-qa-Y3X"/>
+                            <constraint firstItem="cPH-KY-3wn" firstAttribute="centerX" secondItem="IpF-Mv-AXT" secondAttribute="centerX" id="yMz-z3-Zem"/>
                             <constraint firstAttribute="centerX" secondItem="S6C-Mh-IfS" secondAttribute="centerX" constant="-9" id="ySM-iy-xxb"/>
                             <constraint firstItem="04X-Y0-kEq" firstAttribute="leading" secondItem="Q5P-2Z-EPs" secondAttribute="trailing" constant="10" id="yuO-m2-00o"/>
                             <constraint firstItem="vwC-Yc-hV0" firstAttribute="top" secondItem="BEt-9c-q4q" secondAttribute="bottom" constant="-1" id="zKE-pU-RQA"/>
@@ -446,6 +454,7 @@
                         <outlet property="precipitationLabel" destination="S6C-Mh-IfS" id="UP8-kK-nWL"/>
                         <outlet property="rainDrop" destination="xc5-bX-Xk8" id="LCf-c7-19u"/>
                         <outlet property="rainUILabel" destination="Z3f-h5-iyP" id="W7M-xb-lif"/>
+                        <outlet property="refreshIndicator" destination="cPH-KY-3wn" id="R9Y-ff-jMr"/>
                         <outlet property="summaryLabel" destination="eNl-M7-Ood" id="dXX-1R-S1X"/>
                         <outlet property="swipeView" destination="IpF-Mv-AXT" id="20d-z3-tDk"/>
                         <outlet property="temperatureLabel" destination="kJ0-p5-bTb" id="60g-G6-ZXh"/>
@@ -459,10 +468,56 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-79" y="153"/>
+            <point key="canvasLocation" x="-318" y="146"/>
+        </scene>
+        <!--Info Tab View Controller-->
+        <scene sceneID="GTV-ag-6jy">
+            <objects>
+                <viewController id="vun-Fh-m8N" customClass="InfoTabViewController" customModule="Cloudy" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="r9e-xc-hIM"/>
+                        <viewControllerLayoutGuide type="bottom" id="Bwb-0n-ULn"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="4fY-iL-Hda">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZGw-pG-Eg0">
+                                <rect key="frame" x="89" y="508" width="143" height="30"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                                <state key="normal" title="Powered by Forecast">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="openForecastLink:" destination="vun-Fh-m8N" eventType="touchUpInside" id="rum-9r-5mM"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MYd-E9-s5C">
+                                <rect key="frame" x="15" y="22" width="27" height="32"/>
+                                <state key="normal" image="backbutton"/>
+                                <connections>
+                                    <segue destination="vXZ-lx-hvc" kind="modal" identifier="BackToMainView" modalTransitionStyle="flipHorizontal" id="iqB-O6-7hU"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="ZGw-pG-Eg0" firstAttribute="centerX" secondItem="4fY-iL-Hda" secondAttribute="centerX" id="XAg-Y7-obs"/>
+                            <constraint firstItem="Bwb-0n-ULn" firstAttribute="top" secondItem="ZGw-pG-Eg0" secondAttribute="bottom" constant="30" id="tjF-72-2Rn"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="forecastLink" destination="ZGw-pG-Eg0" id="m4e-HA-j8I"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="g6n-7j-tK2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="169" y="146"/>
         </scene>
     </scenes>
     <resources>
+        <image name="backbutton" width="16" height="25"/>
         <image name="cloudy-night" width="73" height="42"/>
         <image name="degree" width="122" height="122"/>
         <image name="heatindex" width="820" height="66"/>

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B91E17111CFC67B900C699C5 /* InfoTabViewContoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91E17101CFC67B900C699C5 /* InfoTabViewContoller.swift */; };
 		B9E232651CF9AFF800403ED3 /* Currently.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E232641CF9AFF800403ED3 /* Currently.swift */; };
 		B9F628071CF95B7200D40FB8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9F628061CF95B7200D40FB8 /* AppDelegate.swift */; };
 		B9F628091CF95B7200D40FB8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9F628081CF95B7200D40FB8 /* ViewController.swift */; };
@@ -23,6 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B91E17101CFC67B900C699C5 /* InfoTabViewContoller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoTabViewContoller.swift; sourceTree = "<group>"; };
 		B9BC0DC91CFAB9E300281BA4 /* contents.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = contents.json; path = Cloudy/contents.json; sourceTree = "<group>"; };
 		B9E232641CF9AFF800403ED3 /* Currently.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Currently.swift; sourceTree = "<group>"; };
 		B9F628031CF95B7200D40FB8 /* Cloudy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cloudy.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -76,6 +78,7 @@
 			children = (
 				B9F628061CF95B7200D40FB8 /* AppDelegate.swift */,
 				B9F628081CF95B7200D40FB8 /* ViewController.swift */,
+				B91E17101CFC67B900C699C5 /* InfoTabViewContoller.swift */,
 				B9FAD6791CF9EAC600570FB6 /* Daily.swift */,
 				B9E232641CF9AFF800403ED3 /* Currently.swift */,
 				B9F6280D1CF95B7200D40FB8 /* Assets.xcassets */,
@@ -168,6 +171,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B9F628211CF95C8100D40FB8 /* SpringAnimation.swift in Sources */,
+				B91E17111CFC67B900C699C5 /* InfoTabViewContoller.swift in Sources */,
 				B9FAD67A1CF9EAC600570FB6 /* Daily.swift in Sources */,
 				B9F628091CF95B7200D40FB8 /* ViewController.swift in Sources */,
 				B9E232651CF9AFF800403ED3 /* Currently.swift in Sources */,

@@ -61,6 +61,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var dayFourImage: UIImageView!
     @IBOutlet weak var dayFiveImage: UIImageView!
     @IBOutlet weak var daySixImage: UIImageView!
+    @IBOutlet weak var refreshIndicator: UIActivityIndicatorView!
     
     //Alerts outlets
     
@@ -80,6 +81,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     var userLatitude: Double!
     var userLongitude: Double!
     var userTemperatureCelsius: Bool!
+    var locationAsString: String!
+    var weatherDict: [String: AnyObject]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -88,7 +91,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         swipeRec.addTarget(self, action: #selector(ViewController.swipedView))
         swipeRec.direction = .Down
         swipeView.addGestureRecognizer(swipeRec)
-        
+        self.loadDefaults()
+
+        let notificationSettings = UIUserNotificationSettings(forTypes: [UIUserNotificationType.Alert, UIUserNotificationType.Sound, UIUserNotificationType.Badge], categories: nil)
+
+        UIApplication.sharedApplication().registerUserNotificationSettings(notificationSettings)
         refresh()
     }
     
@@ -143,14 +150,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             let postalCode = (containsPlacemark.postalCode != nil) ? containsPlacemark.postalCode : ""
             let administrativeArea = (containsPlacemark.administrativeArea != nil) ? containsPlacemark.administrativeArea : ""
             let country = (containsPlacemark.country != nil) ? containsPlacemark.country : ""
-            
             print("Locality:\(locality)\nPostalCode:\(postalCode)\nAdministrativeArea:\(administrativeArea)\nCountry:\(country)")
             
             NSLog("Locality:\(locality)\nPostalCode:\(postalCode)\nAdministrativeArea:\(administrativeArea)\nCountry:\(country)")
             
-            let string = "\(locality!), \(administrativeArea!), \(country!)"
+            self.locationAsString = "\(locality!), \(administrativeArea!), \(country!)"
             
-            self.userLocationLabel.text = string
+            self.userLocationLabel.text = self.locationAsString
             
         }
     }
@@ -378,11 +384,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         let baseURL = NSURL(string: "https://api.forecast.io/forecast/\(apiKey)/")
         let forecastURL = NSURL(string: "\(userLocation)", relativeToURL:baseURL)
         
+        self.refreshIndicator.startAnimating()
+        
         //72.371224,-41.382676 GreenLand (Cold Place!)
         //\(userLocation) (YOUR LOCATION!)
         
         print(userLocation)
         
+        //Load preloaded Data to avoid errors
+
         let sharedSession = NSURLSession.sharedSession()
         
         let downloadTask = sharedSession.downloadTaskWithURL(forecastURL!,completionHandler: {
@@ -390,18 +400,21 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             (location: NSURL?, response: NSURLResponse?, error: NSError?) -> Void in
             
             if error == nil {
-                
+
                 let dataObject = NSData(contentsOfURL: location!)
                 let weatherDictionary = try! NSJSONSerialization.JSONObjectWithData(dataObject!, options:[])
+                self.weatherDict = weatherDictionary as? [String: AnyObject]
                 
                 if let weather = weatherDictionary as? [String: AnyObject] {
                     self.displayData(weather)
                 }
                 
                 dispatch_async(dispatch_get_main_queue()) {
+                    let locationPath = self.getDocumentsDirectory().stringByAppendingPathComponent("location.dat")
                     let path = self.getDocumentsDirectory().stringByAppendingPathComponent("contents.json")
                     do {
                         try dataObject?.writeToFile(path, options:[])
+                        try self.locationAsString?.writeToFile(locationPath, atomically: true, encoding: NSUTF8StringEncoding)
                     } catch {
                         fatalError("failedToWriteToFile at path: \(path)")
                     }
@@ -420,38 +433,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 } else {
                     print("Error NULL")
                 }
-                
-                
-                
-                do {
-                    let path = self.getDocumentsDirectory().stringByAppendingPathComponent("contents.json")
-                    if let dataObject = NSFileManager.defaultManager().contentsAtPath(path) {
-                        let weatherDictionary = try NSJSONSerialization.JSONObjectWithData(dataObject, options:[NSJSONReadingOptions.AllowFragments])
-                        if let weather = weatherDictionary as? [String: AnyObject] {
-                            self.displayData(weather)
-                        }
-                    }
-                } catch {
-                
-                    let fm = NSFileManager.defaultManager()
-                    let path = NSBundle.mainBundle().resourcePath
-                    
-                    
-                    if let item = fm.contentsAtPath(path!+"/contents.json") {
-                
-                        let dataObject = item
-                        let weatherDictionary = try! NSJSONSerialization.JSONObjectWithData(dataObject, options:[NSJSONReadingOptions.AllowFragments])
-                        if let weather = weatherDictionary as? [String: AnyObject] {
-                            self.displayData(weather)
-                        }
-                    }
-                }
+                self.loadDefaults()
             }
             
         })
         
         downloadTask.resume()
-
+        
     }
     
     func getDocumentsDirectory() -> NSString {
@@ -464,6 +452,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         let current = Currently(weatherDictionary: weatherDictionary)
         let daily = Daily(weatherDictionary: weatherDictionary)
+        self.userLocationLabel.text = self.locationAsString
         
         print(current)
         print("\n\n\n")
@@ -518,12 +507,48 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             self.dayFiveWeekDayLabel.text = "\(daily.day[5]!)"
             self.daySixWeekDayLabel.text = "\(daily.day[6]!)"
             
+            self.refreshIndicator.stopAnimating()
+            
+        }
+    }
+    
+    func loadDefaults() {
+        do {
+            let path = self.getDocumentsDirectory().stringByAppendingPathComponent("contents.json")
+            let locationPath = self.getDocumentsDirectory().stringByAppendingPathComponent("location.dat")
+            if let dataObject = NSFileManager.defaultManager().contentsAtPath(path) {
+                let weatherDictionary = try NSJSONSerialization.JSONObjectWithData(dataObject, options:[NSJSONReadingOptions.AllowFragments])
+                if let weather = weatherDictionary as? [String: AnyObject] {
+                    let string = try String(contentsOfFile: locationPath, encoding: NSUTF8StringEncoding)
+                    self.locationAsString = string
+                    self.displayData(weather)
+                }
+            }
+        } catch {
+            let fm = NSFileManager.defaultManager()
+            let path = NSBundle.mainBundle().resourcePath
+            if let item = fm.contentsAtPath(path!+"/contents.json") {
+                let dataObject = item
+                let weatherDictionary = try! NSJSONSerialization.JSONObjectWithData(dataObject, options:[NSJSONReadingOptions.AllowFragments])
+                if let weather = weatherDictionary as? [String: AnyObject] {
+                    self.displayData(weather)
+                }
+            }
         }
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    // MARK: - SEGUES
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "InfoPage" {
+            let navigationController = segue.destinationViewController as! InfoTabViewController
+            navigationController.detailItem = self.weatherDict
+        }
     }
 
 
