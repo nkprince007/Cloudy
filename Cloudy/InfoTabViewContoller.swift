@@ -80,6 +80,8 @@ class InfoTabViewController: UIViewController {
 
     func animate() {
 
+        let initialDelay = 0.1
+
         self.realFeelLabel.transform = CGAffineTransformMakeTranslation(-300, 0)
         self.realFeelValue.transform = CGAffineTransformMakeTranslation(300, 0)
         self.ozoneLabel.transform = CGAffineTransformMakeTranslation(-300, 0)
@@ -95,7 +97,7 @@ class InfoTabViewController: UIViewController {
         self.windDirectionLabel.transform = CGAffineTransformMakeTranslation(-300, 0)
         self.windDirectionValue.transform = CGAffineTransformMakeTranslation(300, 0)
 
-        UIView.animateWithDuration(0.40, animations: {
+        UIView.animateWithDuration(initialDelay, animations: {
 
             self.realFeelLabel.alpha = 1.0
             self.realFeelValue.alpha = 1.0
@@ -114,68 +116,47 @@ class InfoTabViewController: UIViewController {
 
         })
 
-        springWithDelay(0.9, delay: 0.40, animations: {
+        springWithDelay(0.9, delay: initialDelay, animations: {
             self.realFeelLabel.transform = CGAffineTransformMakeTranslation(0, 0)
-        })
-
-        springWithDelay(0.9, delay: 0.40, animations: {
             self.realFeelValue.transform = CGAffineTransformMakeTranslation(0, 0)
         })
 
-        springWithDelay(0.9, delay: 0.50, animations: {
+        springWithDelay(0.9, delay: initialDelay+0.1, animations: {
             self.cloudCoverLabel.transform = CGAffineTransformMakeTranslation(0, 0)
-        })
-
-        springWithDelay(0.9, delay: 0.50, animations: {
             self.cloudCoverValue.transform = CGAffineTransformMakeTranslation(0, 0)
         })
 
-        springWithDelay(0.9, delay: 0.60, animations: {
+        springWithDelay(0.9, delay: initialDelay+0.2, animations: {
             self.ozoneLabel.transform = CGAffineTransformMakeTranslation(0, 0)
-        })
-
-        springWithDelay(0.9, delay: 0.60, animations: {
             self.ozoneValue.transform = CGAffineTransformMakeTranslation(0, 0)
         })
 
-        springWithDelay(0.9, delay: 0.70, animations: {
+        springWithDelay(0.9, delay: initialDelay+0.3, animations: {
             self.precipitationLabel.transform = CGAffineTransformMakeTranslation(0, 0)
-        })
-
-        springWithDelay(0.9, delay: 0.70, animations: {
             self.precipitationValue.transform = CGAffineTransformMakeTranslation(0, 0)
         })
 
-        springWithDelay(0.9, delay: 0.80, animations: {
+        springWithDelay(0.9, delay: initialDelay+0.4, animations: {
             self.pressureLabel.transform = CGAffineTransformMakeTranslation(0, 0)
-        })
-
-        springWithDelay(0.9, delay: 0.80, animations: {
             self.pressureValue.transform = CGAffineTransformMakeTranslation(0, 0)
         })        
 
-        springWithDelay(0.9, delay: 0.90, animations: {
+        springWithDelay(0.9, delay: initialDelay+0.5, animations: {
             self.visibilityLabel.transform = CGAffineTransformMakeTranslation(0, 0)
-        })
-
-        springWithDelay(0.9, delay: 0.90, animations: {
             self.visibilityValue.transform = CGAffineTransformMakeTranslation(0, 0)
         })
 
-        springWithDelay(0.9, delay: 1.0, animations: {
+        springWithDelay(0.9, delay: initialDelay+0.6, animations: {
             self.windDirectionLabel.transform = CGAffineTransformMakeTranslation(0, 0)
-        })
-
-        springWithDelay(0.9, delay: 1.0, animations: {
             self.windDirectionValue.transform = CGAffineTransformMakeTranslation(0, 0)
         })
 
-        springWithDelay(0.9, delay: 1.1, animations: {
+        springWithDelay(0.9, delay: initialDelay+0.7, animations: {
             self.forecastLink.alpha = 1.0
             self.forecastLink.transform = CGAffineTransformMakeScale(1, 1)
         })
 
-        springWithDelay(0.9, delay: 1.1, animations: {
+        springWithDelay(0.9, delay: initialDelay+0.8, animations: {
             self.backButton.alpha = 1.0
             self.backButton.transform = CGAffineTransformMakeScale(1, 1)
             self.backButton.transform = CGAffineTransformMakeRotation(0)
